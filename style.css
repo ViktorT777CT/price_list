@@ -1,0 +1,10 @@
+.header_tel{
+    text-align: center;
+}
+.block_tel{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    align-items: center;
+    height: 100%;
+}
