@@ -6,9 +6,8 @@ class ControllerCommonPdf extends Controller {
         $this->load->language('common/pdf');
         $this->document->setTitle($this->language->get('heading_title'));
 
-
         if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
-            $this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=analytics', true));
+           $this->download();
         }
 
         $data['breadcrumbs'] = array();
@@ -23,7 +22,7 @@ class ControllerCommonPdf extends Controller {
             'href' => $this->url->link('common/pdf', 'user_token=' . $this->session->data['user_token'], true)
         );
 
-        $data['action'] = $this->url->link('common/pdf/download', 'user_token=' . $this->session->data['user_token'], true);
+        $data['action'] = $this->url->link('common/pdf', 'user_token=' . $this->session->data['user_token'], true);
         $data['user_token'] = $this->session->data['user_token'];
 
         $data['header'] = $this->load->controller('common/header');
@@ -31,5 +30,13 @@ class ControllerCommonPdf extends Controller {
         $data['footer'] = $this->load->controller('common/footer');
 
         $this->response->setOutput($this->load->view('common/pdf', $data));
+    }
+
+    private function download()
+    {
+        $max = (int)($this->request->post['max'] ?? 0);
+        $this->load->model('catalog/pdf');
+
+        $this->model_catalog_pdf->generatePdf($max);
     }
 }
