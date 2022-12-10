@@ -53,7 +53,7 @@ class ModelCatalogPdf extends Model {
                 $data_product = <<<EOF
                 <div class="col">
                     <div class="d-flex justify-content-center">
-                        <img src="$image" class="img-fluid" alt="$name">
+                        <img src="$image" class="col" alt="$name">
                     </div>
                     <div class="count">
                         <p class="d-flex justify-content-center">$price ₽</p>
@@ -159,7 +159,7 @@ class ModelCatalogPdf extends Model {
                             <div class="row">
                                 <div class="col">
                                     <div>
-                                        <a href="https://www.odnorazovayaposudaykt.ru/index.php?route=common/home"><img src="$logo" title="Интернет магазин Одноразовой посуды" alt="Интернет магазин Одноразовой посуды" class="img-responsive"></a>
+                                        <a href="https://www.odnorazovayaposudaykt.ru/index.php?route=common/home"><img src="$logo" title="Интернет магазин Одноразовой посуды" alt="Интернет магазин Одноразовой посуды" class="logo img-responsive"></a>
                                     </div>
                                 </div>
                                     
