@@ -106,25 +106,26 @@ class ModelCatalogPdf extends Model {
                         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
                         <style>
                             .container{
-                                max-width: 1140px;
+                                max-width: 760px;
                                 margin: auto;
                                 padding-top: 30px;
+                            }
+                            .logo{
+                                width: 380px;
                             }
                             .row {
                                 --bs-gutter-x: 1.5rem;
                                 --bs-gutter-y: 0;
                                 display: flex;
                                 flex-wrap: wrap;
-                                margin-top: calc(-1 * var(--bs-gutter-y));
-                                margin-right: calc(-.5 * var(--bs-gutter-x));
-                                margin-left: calc(-.5 * var(--bs-gutter-x));
+                                margin: auto;
                             }
                             .col {
-                                flex: 1 0 0%;
+                                width: 152px;
                             }
                             .col-md-4 {
                                 flex: 0 0 auto;
-                                width: 33.33333333%;
+                                width: 380px;
                             }
                             .mt-5 {
                                 margin-top: 3rem!important;
