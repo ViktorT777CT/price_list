@@ -6,7 +6,15 @@ class ControllerCommonColumnLeft extends Controller {
 
 			// Create a 3 level menu array
 			// Level 2 can not have children
-			
+
+            $data['menus'][] = array(
+                'id'       => 'download-price',
+                'icon'	   => 'fa-cloud-download',
+                'name'	   => $this->language->get('text_download_price'),
+                'href'     => $this->url->link('extension/download_price/download_price', 'user_token=' . $this->session->data['user_token'], true),
+                'children' => array()
+            );
+
 			// Menu
 			$data['menus'][] = array(
 				'id'       => 'menu-dashboard',
