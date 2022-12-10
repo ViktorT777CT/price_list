@@ -191,7 +191,7 @@ class ModelCatalogPdf extends Model {
         /**
          * Расскомментируй для проверки в браузере
          */
-        print $html; die();
+        //print $html; die();
 
         // (D) WRITE HTML TO PDF
         $mpdf->loadHtml($html);
