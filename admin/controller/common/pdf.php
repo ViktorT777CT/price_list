@@ -1,8 +1,9 @@
 <?php
-class ControllerExtensionDownloadPricePdf extends Controller {
+class ControllerCommonPdf extends Controller {
+    private $error = array();
 
     public function index() {
-        $this->load->language('extension/download_price/pdf');
+        $this->load->language('common/pdf');
         $this->document->setTitle($this->language->get('heading_title'));
 
 
@@ -19,16 +20,16 @@ class ControllerExtensionDownloadPricePdf extends Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('extension/download_price/pdf', 'user_token=' . $this->session->data['user_token'] . '&store_id=' . $this->request->get['store_id'], true)
+            'href' => $this->url->link('common/pdf', 'user_token=' . $this->session->data['user_token'], true)
         );
 
-        $data['action'] = $this->url->link('extension/download_price/pdf/download', 'user_token=' . $this->session->data['user_token'], true);
+        $data['action'] = $this->url->link('common/pdf/download', 'user_token=' . $this->session->data['user_token'], true);
         $data['user_token'] = $this->session->data['user_token'];
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('extension/download_price/pdf', $data));
+        $this->response->setOutput($this->load->view('common/pdf', $data));
     }
 }
