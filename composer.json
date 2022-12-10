@@ -1,0 +1,17 @@
+{
+    "name": "zotov/files",
+    "autoload": {
+        "psr-4": {
+            "Zotov\\Files\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zotov",
+            "email": "zotovsasha90@gmail.com"
+        }
+    ],
+    "require": {
+        "dompdf/dompdf": "^2.0"
+    }
+}
