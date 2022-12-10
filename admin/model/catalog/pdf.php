@@ -37,8 +37,14 @@ class ModelCatalogPdf extends Model {
                     continue;
                 }
 
-                $data = file_get_contents(DIR_IMAGE . $product['image']);
-                $type = pathinfo(DIR_IMAGE . $product['image'], PATHINFO_EXTENSION);
+                $image_path = DIR_IMAGE . $product['image'];
+
+                if (!file_exists($image_path) || empty($product['image'])) {
+                    $image_path = DIR_IMAGE . 'no_image.png';
+                }
+
+                $data = file_get_contents($image_path);
+                $type = pathinfo($image_path, PATHINFO_EXTENSION);
                 $image = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
                 $price = (int)$product['price'];
@@ -47,7 +53,7 @@ class ModelCatalogPdf extends Model {
                 $data_product = <<<EOF
                 <div class="col">
                     <div class="d-flex justify-content-center">
-                        <img src="$image" alt="1">
+                        <img src="$image" class="img-fluid" alt="$name">
                     </div>
                     <div class="count">
                         <p class="d-flex justify-content-center">$price ₽</p>
@@ -67,10 +73,14 @@ class ModelCatalogPdf extends Model {
             $category_name = $category['name'];
 
             $data_category = <<<EOF
+                <section class="container mt-5">
+                    <div class="d-flex justify-content-center">
+                        <h2 class="fw-bold">$category_name</h2>
+                    </div>
                     <div class="row">
-                        <div><div><h2 class="fw-bold">$category_name</h2></div></div>
                         $data_html_product
                     </div>
+                </section>
             EOF;
 
             $data_html_category .= $data_category;
@@ -78,6 +88,9 @@ class ModelCatalogPdf extends Model {
 
         $options = new Options();
         $options->set('defaultFont', 'DejaVu Sans');
+        $options->set('isHtml5ParserEnabled', true);
+        //$options->set('debugCss', true);
+
 
         $data = file_get_contents(DIR_IMAGE . 'catalog/POSUDA22.png');
         $type = pathinfo(DIR_IMAGE . 'catalog/POSUDA22.png', PATHINFO_EXTENSION);
@@ -87,17 +100,22 @@ class ModelCatalogPdf extends Model {
         $html = <<<EOF
                     <html>
                     <head>
+                        <meta charset="UTF-8">
+                        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
                         <style>
-                        .header_tel{
-                            text-align: center;
-                        }
-                        .block_tel{
-                            display: flex;
-                            justify-content: center;
-                            margin: auto;
-                            align-items: center;
-                            height: 100%;
-                        }
+                            .header_tel{
+                                text-align: center;
+                            }
+                            .block_tel{
+                                display: flex;
+                                justify-content: center;
+                                margin: auto;
+                                align-items: center;
+                                height: 100%;
+                            }
                       </style>
                     </head>
                     <body>
@@ -134,6 +152,11 @@ class ModelCatalogPdf extends Model {
                     </body>
                     </html>
         EOF;
+
+        /**
+         * Расскомментируй для проверки в браузере
+         */
+        //print $html; die();
 
         // (D) WRITE HTML TO PDF
         $mpdf->loadHtml($html);
