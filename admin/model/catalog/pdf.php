@@ -103,9 +103,41 @@ class ModelCatalogPdf extends Model {
                         <meta charset="UTF-8">
                         <meta http-equiv="X-UA-Compatible" content="IE=edge">
                         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+                        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
                         <style>
+                            .container{
+                                max-width: 1140px;
+                                margin: auto;
+                                padding-top: 30px;
+                            }
+                            .row {
+                                --bs-gutter-x: 1.5rem;
+                                --bs-gutter-y: 0;
+                                display: flex;
+                                flex-wrap: wrap;
+                                margin-top: calc(-1 * var(--bs-gutter-y));
+                                margin-right: calc(-.5 * var(--bs-gutter-x));
+                                margin-left: calc(-.5 * var(--bs-gutter-x));
+                            }
+                            .col {
+                                flex: 1 0 0%;
+                            }
+                            .col-md-4 {
+                                flex: 0 0 auto;
+                                width: 33.33333333%;
+                            }
+                            .mt-5 {
+                                margin-top: 3rem!important;
+                            }
+                            .d-flex {
+                                display: flex!important;
+                            }
+                            .justify-content-center {
+                                justify-content: center!important;
+                            }
+                            .fw-bold {
+                                font-weight: 700!important;
+                            }
                             .header_tel{
                                 text-align: center;
                             }
@@ -116,7 +148,10 @@ class ModelCatalogPdf extends Model {
                                 align-items: center;
                                 height: 100%;
                             }
-                      </style>
+                            .m_0{
+                                margin:0;
+                            }
+                        </style>
                     </head>
                     <body>
                          <header class="container">
@@ -134,13 +169,13 @@ class ModelCatalogPdf extends Model {
                                                 <span>Ежедневно с 09:00 до 20:00</span>
                                             </div>
                                             <div>
-                                                <p class="m-0">ИП АСЕЕВА О.Ю.ИНН 143520612490</p>
-                                                <p class="m-0">Телефон Оптового отдела: <a href="tel:+79644217505">+7964-421-75-05</a></p>
-                                                <p class="m-0">Телефон магазина: <a href="tel:+79644217505">+7964-421-75-05</a></p>
-                                                <p class="m-0">Адрес: ул. Красильникова, 3в, Якутск, Респ. Саха (Якутия), Россия, 677007</p>
-                                                <p class="m-0">Сайт доставки: <a href="http://www.odnorazovayaposudaykt.ru/">http://www.odnorazovayaposudaykt.ru/</a> </p>
-                                                <p class="m-0">Email: <a href="mail: odnorazovaya_posuda_ykt@mail.ru"> odnorazovaya_posuda_ykt@mail.ru</a></p>
-                                                <p class="m-0"><a href="Www.instagram.com/odnorazovaya_posuda_ykt">Www.instagram.com/odnorazovaya_posuda_ykt</a></p>
+                                                <p class="m_0">ИП АСЕЕВА О.Ю.ИНН 143520612490</p>
+                                                <p class="m_0">Телефон Оптового отдела: <a href="tel:+79644217505">+7964-421-75-05</a></p>
+                                                <p class="m_0">Телефон магазина: <a href="tel:+79644217505">+7964-421-75-05</a></p>
+                                                <p class="m_0">Адрес: ул. Красильникова, 3в, Якутск, Респ. Саха (Якутия), Россия, 677007</p>
+                                                <p class="m_0">Сайт доставки: <a href="http://www.odnorazovayaposudaykt.ru/">http://www.odnorazovayaposudaykt.ru/</a> </p>
+                                                <p class="m_0">Email: <a href="mail: odnorazovaya_posuda_ykt@mail.ru"> odnorazovaya_posuda_ykt@mail.ru</a></p>
+                                                <p class="m_0"><a href="Www.instagram.com/odnorazovaya_posuda_ykt">Www.instagram.com/odnorazovaya_posuda_ykt</a></p>
                                                 
                                             </div>
                                         </div>
@@ -156,7 +191,7 @@ class ModelCatalogPdf extends Model {
         /**
          * Расскомментируй для проверки в браузере
          */
-        //print $html; die();
+        print $html; die();
 
         // (D) WRITE HTML TO PDF
         $mpdf->loadHtml($html);
