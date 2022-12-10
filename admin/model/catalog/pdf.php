@@ -119,9 +119,6 @@ class ModelCatalogPdf extends Model {
                       </style>
                     </head>
                     <body>
-                    <div class="alert alert-primary" role="alert">
-                      A simple primary alert—check it out!
-                    </div>
                          <header class="container">
                             <div class="row">
                                 <div class="col">
