@@ -17,6 +17,7 @@ class ModelCatalogPdf extends Model {
 
         $this->load->model('catalog/category');
         $this->load->model('catalog/product');
+        $this->load->model('tool/image');
 
         $categories = $this->model_catalog_category->getCategories();
         $data_html_category = '';
@@ -39,36 +40,28 @@ class ModelCatalogPdf extends Model {
 
                 $image_path = DIR_IMAGE . $product['image'];
 
-                if (!file_exists($image_path) || empty($product['image'])) {
-                    $image_path = DIR_IMAGE . 'no_image.png';
+                // сделаем резак фото
+                if (is_file($image_path) && !empty($product['image'])) {
+                    $image = $this->model_tool_image->resize($product['image'], 150, 150);
+                } else {
+                    $image = $this->model_tool_image->resize('no_image.png', 150, 150);
                 }
 
-                $data = file_get_contents($image_path);
-                $type = pathinfo($image_path, PATHINFO_EXTENSION);
-                $image = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                $data = file_get_contents($image);
+                $type = pathinfo($image, PATHINFO_EXTENSION);
+                $image_64_decode = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
                 $price = (int)$product['price'];
                 $name = $product['name'];
 
                 $data_product = <<<EOF
-                            <tr>
                                 <td>
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <img src="$image" class="col" alt="$name">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="block_tel">$price ₽</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="block_tel">$name</td>
-                                        </tr>
-                                    </table>
+                                    <div class="block_tel">
+                                        <img src="$image_64_decode" class="col" alt="$name">
+                                        <p>$price ₽</p>
+                                        <p>$name</p>
+                                    </div>
                                 </td>
-                            </tr>
-                
             EOF;
 
                 $data_html_product .= $data_product;
@@ -81,12 +74,16 @@ class ModelCatalogPdf extends Model {
 
             $data_category = <<<EOF
                         <table class="container">
-                            <tr>
-                                <th>
-                                    <h2 class="fw-bold">$category_name</h2>
-                                </th>
-                            </tr>
+                            <thead>
+                               <tr>
+                                    <th colspan="5">
+                                        <h2 class="fw-bold">$category_name</h2>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 $data_html_product
+                            </tbody>
                         </table>
             EOF;
 
@@ -142,7 +139,7 @@ class ModelCatalogPdf extends Model {
                         <table class="container">
                             <tr>
                                 <td>
-                                    <a href="https://www.odnorazovayaposudaykt.ru/index.php?route=common/home"><img class="logo img-responsive" src="https://www.odnorazovayaposudaykt.ru/image/catalog/POSUDA22.png" title="Интернет магазин Одноразовой посуды" alt="Интернет магазин Одноразовой посуды"></a>
+                                    <a href="https://www.odnorazovayaposudaykt.ru/index.php?route=common/home"><img class="logo img-responsive" src="$logo" title="Интернет магазин Одноразовой посуды" alt="Интернет магазин Одноразовой посуды"></a>
                                 </td>
                                 <td>
                                     <table>
@@ -183,7 +180,7 @@ class ModelCatalogPdf extends Model {
         /**
          * Расскомментируй для проверки в браузере
          */
-        //print $html; die();
+        print $html; die();
 
         // (D) WRITE HTML TO PDF
         $mpdf->loadHtml($html);
