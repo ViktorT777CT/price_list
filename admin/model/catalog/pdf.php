@@ -34,9 +34,9 @@ class ModelCatalogPdf extends Model {
             $key = 1;
             foreach ($products as $key_product => $product)
             {
-                if ($key_product === 0) {
+                if ($key_product === 0 || $key_product % 5 === 0) {
                     $data_html_product .= "<tr>";
-                }
+                } 
 
                 if (!empty($max) && $total > $max) {
                     continue;
@@ -66,7 +66,7 @@ class ModelCatalogPdf extends Model {
                                         <p>$name</p>
                                     </div>
                                 </td>
-            EOF;
+                            EOF;
 
                 if (count($products) === ($key_product + 1) && count($products) < 5) {
                     for ($i = 1; $i <= (5 - count($products)); $i++) {
@@ -100,7 +100,7 @@ class ModelCatalogPdf extends Model {
                                 <col width="20%" />
                             </colgroup>
                             <thead>
-                               <tr>
+                                <tr>
                                     <th colspan="5">
                                         <h2 class="fw-bold">$category_name</h2>
                                     </th>
@@ -134,8 +134,11 @@ class ModelCatalogPdf extends Model {
                         <meta name="viewport" content="width=device-width, initial-scale=1.0">
                         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
                         <style>
+                            body{
+                                font-size: 8pt;
+                            }
                             .container{
-                                width: 200mm;
+                                width: 190mm;
                                 margin: auto;
                                 padding-top: 30px;
                             }
@@ -143,7 +146,7 @@ class ModelCatalogPdf extends Model {
                                 width: 100mm;
                             }
                             .col {
-                                width: 40mm;
+                                width: 35mm;
                             }
                             .fw-bold {
                                 font-weight: 700!important;
