@@ -52,17 +52,19 @@ class ModelCatalogPdf extends Model {
 
                 $data_product = <<<EOF
                                 <td>
-                                    <div class="col">
-                                        <div class="block_tel">
-                                            <img src="$image" class="col" alt="$name">
-                                        </div>
-                                        <div class="count">
-                                            <p class="block_tel">$price ₽</p>
-                                        </div>
-                                        <div class="description">
-                                            <p class="block_tel">$name</p>
-                                        </div>
-                                    </div>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <img src="$image" class="col" alt="$name">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="block_tel">$price ₽</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="block_tel">$name</td>
+                                        </tr>
+                                    </table>
                                 </td>
                 
             EOF;
@@ -128,11 +130,8 @@ class ModelCatalogPdf extends Model {
                                 text-align: center;
                             }
                             .block_tel{
-                                display: flex;
-                                justify-content: center;
+                                text-align: center;
                                 margin: auto;
-                                align-items: center;
-                                height: 100%;
                             }
                             .m_0{
                                 margin:0;
@@ -146,23 +145,33 @@ class ModelCatalogPdf extends Model {
                                     <a href="https://www.odnorazovayaposudaykt.ru/index.php?route=common/home"><img class="logo img-responsive" src="https://www.odnorazovayaposudaykt.ru/image/catalog/POSUDA22.png" title="Интернет магазин Одноразовой посуды" alt="Интернет магазин Одноразовой посуды"></a>
                                 </td>
                                 <td>
-                                    <div class="block_tel">
-                                        <div>
-                                            <div class="schedule header_tel heigth">
-                                                <span>Ежедневно с 09:00 до 20:00</span>
-                                            </div>
-                                            <div>
-                                                <p class="m_0">ИП АСЕЕВА О.Ю.ИНН 143520612490</p>
-                                                <p class="m_0">Телефон Оптового отдела: <a href="tel:+79644217505">+7964-421-75-05</a></p>
-                                                <p class="m_0">Телефон магазина: <a href="tel:+79644217505">+7964-421-75-05</a></p>
-                                                <p class="m_0">Адрес: ул. Красильникова, 3в, Якутск, Респ. Саха (Якутия), Россия, 677007</p>
-                                                <p class="m_0">Сайт доставки: <a href="http://www.odnorazovayaposudaykt.ru/">http://www.odnorazovayaposudaykt.ru/</a> </p>
-                                                <p class="m_0">Email: <a href="mail: odnorazovaya_posuda_ykt@mail.ru"> odnorazovaya_posuda_ykt@mail.ru</a></p>
-                                                <p class="m_0"><a href="Www.instagram.com/odnorazovaya_posuda_ykt">Www.instagram.com/odnorazovaya_posuda_ykt</a></p>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <table>
+                                        <tr>
+                                            <td>Ежедневно с 09:00 до 20:00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ИП АСЕЕВА О.Ю.ИНН 143520612490</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Телефон Оптового отдела: <a href="tel:+79644217505">+7964-421-75-05</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Телефон магазина: <a href="tel:+79644217505">+7964-421-75-05</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Адрес: ул. Красильникова, 3в, Якутск, Респ. Саха (Якутия), Россия, 677007</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Сайт доставки: <a href="http://www.odnorazovayaposudaykt.ru/">http://www.odnorazovayaposudaykt.ru/</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email: <a href="mail: odnorazovaya_posuda_ykt@mail.ru"> odnorazovaya_posuda_ykt@mail.ru</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="Www.instagram.com/odnorazovaya_posuda_ykt">Www.instagram.com/odnorazovaya_posuda_ykt</a></td>
+                                        </tr>
+                                    </table>
+                                        
                                 </td>
                             </tr>
                         </table>
