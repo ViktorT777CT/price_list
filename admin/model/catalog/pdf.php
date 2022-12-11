@@ -86,6 +86,10 @@ class ModelCatalogPdf extends Model {
 
             $category_name = $category['name'];
 
+            // обрезаем подкатегории
+            //$names = explode('>', $category['name']);
+            //$category_name = trim(end($names));
+
             $data_category = <<<EOF
                         <table class="container">
                             <colgroup>
