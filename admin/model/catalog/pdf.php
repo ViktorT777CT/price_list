@@ -113,15 +113,15 @@ class ModelCatalogPdf extends Model {
                         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
                         <style>
                             .container{
-                                max-width: 760px;
+                                width: 200mm;
                                 margin: auto;
                                 padding-top: 30px;
                             }
                             .logo{
-                                width: 380px;
+                                width: 100mm;
                             }
                             .col {
-                                width: 152px;
+                                width: 40mm;
                             }
                             .fw-bold {
                                 font-weight: 700!important;
