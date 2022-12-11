@@ -32,8 +32,12 @@ class ModelCatalogPdf extends Model {
             $data_html_product = '';
 
             $key = 1;
-            foreach ($products as $product)
+            foreach ($products as $key_product => $product)
             {
+                if ($key_product === 0) {
+                    $data_html_product .= "<tr>";
+                }
+
                 if (!empty($max) && $total > $max) {
                     continue;
                 }
@@ -64,7 +68,17 @@ class ModelCatalogPdf extends Model {
                                 </td>
             EOF;
 
+                if (count($products) === ($key_product + 1) && count($products) < 5) {
+                    for ($i = 1; $i <= (5 - count($products)); $i++) {
+                        $data_product .= "<td></td>";
+                    }
+                }
+
                 $data_html_product .= $data_product;
+
+                if (($key % 5 === 0 && $key_product !== 0) || count($products) === ($key_product + 1)) {
+                    $data_html_product .= "</tr>";
+                }
 
                 $total++;
                 $key++;
@@ -74,6 +88,13 @@ class ModelCatalogPdf extends Model {
 
             $data_category = <<<EOF
                         <table class="container">
+                            <colgroup>
+                                <col width="20%" />
+                                <col width="20%" />
+                                <col width="20%" />
+                                <col width="20%" />
+                                <col width="20%" />
+                            </colgroup>
                             <thead>
                                <tr>
                                     <th colspan="5">
@@ -180,7 +201,7 @@ class ModelCatalogPdf extends Model {
         /**
          * Расскомментируй для проверки в браузере
          */
-        print $html; die();
+        //print $html; die();
 
         // (D) WRITE HTML TO PDF
         $mpdf->loadHtml($html);
