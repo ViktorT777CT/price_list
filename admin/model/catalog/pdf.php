@@ -51,6 +51,7 @@ class ModelCatalogPdf extends Model {
                 $name = $product['name'];
 
                 $data_product = <<<EOF
+                            <tr>
                                 <td>
                                     <table>
                                         <tr>
@@ -66,6 +67,7 @@ class ModelCatalogPdf extends Model {
                                         </tr>
                                     </table>
                                 </td>
+                            </tr>
                 
             EOF;
 
@@ -84,9 +86,7 @@ class ModelCatalogPdf extends Model {
                                     <h2 class="fw-bold">$category_name</h2>
                                 </th>
                             </tr>
-                            <tr>
                                 $data_html_product
-                            </tr>
                         </table>
             EOF;
 
