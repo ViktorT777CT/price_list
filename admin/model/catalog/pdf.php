@@ -51,17 +51,20 @@ class ModelCatalogPdf extends Model {
                 $name = $product['name'];
 
                 $data_product = <<<EOF
-                <div class="col">
-                    <div class="d-flex justify-content-center">
-                        <img src="$image" class="col" alt="$name">
-                    </div>
-                    <div class="count">
-                        <p class="d-flex justify-content-center">$price ₽</p>
-                    </div>
-                    <div class="description">
-                        <p class="d-flex justify-content-center">$name</p>
-                    </div>
-                </div>
+                                <td>
+                                    <div class="col">
+                                        <div class="block_tel">
+                                            <img src="$image" class="col" alt="$name">
+                                        </div>
+                                        <div class="count">
+                                            <p class="block_tel">$price ₽</p>
+                                        </div>
+                                        <div class="description">
+                                            <p class="block_tel">$name</p>
+                                        </div>
+                                    </div>
+                                </td>
+                
             EOF;
 
                 $data_html_product .= $data_product;
@@ -73,14 +76,16 @@ class ModelCatalogPdf extends Model {
             $category_name = $category['name'];
 
             $data_category = <<<EOF
-                <section class="container mt-5">
-                    <div class="d-flex justify-content-center">
-                        <h2 class="fw-bold">$category_name</h2>
-                    </div>
-                    <div class="row">
-                        $data_html_product
-                    </div>
-                </section>
+                        <table class="container">
+                            <tr>
+                                <th>
+                                    <h2 class="fw-bold">$category_name</h2>
+                                </th>
+                            </tr>
+                            <tr>
+                                $data_html_product
+                            </tr>
+                        </table>
             EOF;
 
             $data_html_category .= $data_category;
@@ -113,28 +118,8 @@ class ModelCatalogPdf extends Model {
                             .logo{
                                 width: 380px;
                             }
-                            .row {
-                                --bs-gutter-x: 1.5rem;
-                                --bs-gutter-y: 0;
-                                display: flex;
-                                flex-wrap: wrap;
-                                margin: auto;
-                            }
                             .col {
                                 width: 152px;
-                            }
-                            .col-md-4 {
-                                flex: 0 0 auto;
-                                width: 380px;
-                            }
-                            .mt-5 {
-                                margin-top: 3rem!important;
-                            }
-                            .d-flex {
-                                display: flex!important;
-                            }
-                            .justify-content-center {
-                                justify-content: center!important;
                             }
                             .fw-bold {
                                 font-weight: 700!important;
@@ -155,15 +140,12 @@ class ModelCatalogPdf extends Model {
                         </style>
                     </head>
                     <body>
-                         <header class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <div>
-                                        <a href="https://www.odnorazovayaposudaykt.ru/index.php?route=common/home"><img src="$logo" title="Интернет магазин Одноразовой посуды" alt="Интернет магазин Одноразовой посуды" class="logo img-responsive"></a>
-                                    </div>
-                                </div>
-                                    
-                                <div class="col-md-4 col-sm-12 col-xs-12 header-contacts">
+                        <table class="container">
+                            <tr>
+                                <td>
+                                    <a href="https://www.odnorazovayaposudaykt.ru/index.php?route=common/home"><img class="logo img-responsive" src="https://www.odnorazovayaposudaykt.ru/image/catalog/POSUDA22.png" title="Интернет магазин Одноразовой посуды" alt="Интернет магазин Одноразовой посуды"></a>
+                                </td>
+                                <td>
                                     <div class="block_tel">
                                         <div>
                                             <div class="schedule header_tel heigth">
@@ -181,9 +163,9 @@ class ModelCatalogPdf extends Model {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </header> 
+                                </td>
+                            </tr>
+                        </table>
                         $data_html_category
                     </body>
                     </html>
