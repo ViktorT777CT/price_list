@@ -64,12 +64,13 @@ class ControllerCommonPdf extends Controller {
             $data[] = array(
                 'category_id' => $result['category_id'],
                 'name'        => $result['name'],
+                'category' => $this->model_catalog_category->getCategory($result['category_id']),
                 'level' => $this->model_catalog_category->getCategoryPath($result['category_id']),
             );
         }
 
         return array_filter($data, function ($item) {
-            return !empty($item['level']) && count($item['level']) === 1;
+            return !empty($item['level']) && count($item['level']) === 1 && $item['category']['status'] == 1;
         });
     }
 }
