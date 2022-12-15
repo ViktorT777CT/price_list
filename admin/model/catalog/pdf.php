@@ -103,17 +103,12 @@ class ModelCatalogPdf extends Model {
 
             $data_category = <<<EOF
                         <table class="container">
-                            <colgroup>
-                                <col width="20%" />
-                            </colgroup>
-                            <thead>
+                            <tbody>
                                 <tr>
                                     <th colspan="7">
                                         <h2 class="m_0 fw-bold">$category_name</h2>
                                     </th>
                                 </tr>
-                            </thead>
-                            <tbody>
                                 $data_html_product
                             </tbody>
                         </table>
