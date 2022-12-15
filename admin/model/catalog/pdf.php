@@ -124,8 +124,11 @@ class ModelCatalogPdf extends Model {
 
 
         $data = file_get_contents(DIR_IMAGE . 'catalog/POSUDA22.png');
+        $data2 = file_get_contents(DIR_IMAGE . 'catalog/logo2.jpg');
         $type = pathinfo(DIR_IMAGE . 'catalog/POSUDA22.png', PATHINFO_EXTENSION);
+        $type2 = pathinfo(DIR_IMAGE . 'catalog/logo2.jpg', PATHINFO_EXTENSION);
         $logo = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $logo2 = 'data:image/' . $type2 . ';base64,' . base64_encode($data2);
 
         $mpdf = new Dompdf($options);
         $html = <<<EOF
@@ -137,6 +140,7 @@ class ModelCatalogPdf extends Model {
                         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
                         <style>
                             body{
+                                margin-top: 0;
                                 font-size: 6pt;
                             }
                             .head_text{
@@ -204,6 +208,11 @@ class ModelCatalogPdf extends Model {
                                         </tr>
                                     </table>
                                         
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center" style="text-align:center;">
+                                    <img class="logo img-responsive" src="$logo2" title="Интернет магазин Одноразовой посуды" alt="Интернет магазин Одноразовой посуды">
                                 </td>
                             </tr>
                         </table>
