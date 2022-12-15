@@ -8,8 +8,13 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 class ModelCatalogPdf extends Model {
+    private $total = 0;
+    private $max = 0;
+    private $parents = [];
+
     public function generatePdf($max, $category_ids)
     {
+        $this->max = $max;
         ini_set('max_execution_time', 900);
         $root_path = dirname(DIR_APPLICATION);
 
@@ -20,121 +25,8 @@ class ModelCatalogPdf extends Model {
         $this->load->model('tool/image');
 
         $data_html_category = '';
-        $total = 0;
-        $parent_id = 0;
-
         foreach ($category_ids as $category_id) {
-            $category = $this->model_catalog_category->getCategory($category_id);
-            $parent = $this->model_catalog_category->getCategory($category['parent_id']);
-
-            if ($parent_id !== $parent['category_id']) {
-                $parent_id = $parent['category_id'];
-                $parent_name = $parent['name'];
-            } else {
-                $parent_name = '';
-            }
-
-            if (!empty($max) && $total === $max) {
-                continue;
-            }
-
-            //$products = $this->model_catalog_product->getProductsByCategoryId($category_id);
-            $filter_products = [
-                'filter_category_id' => $category_id,
-                'filter_sub_category' => true,
-            ];
-            $products = $this->getProducts($filter_products);
-
-            $data_html_product = '';
-
-            $key = 1;
-            $key_product = 0;
-            foreach ($products as $product)
-            {
-                if ($key_product === 0 || $key_product % 7 === 0) {
-                    $data_html_product .= "<tr>";
-                } 
-
-                if (!empty($max) && $total > $max) {
-                    continue;
-                }
-
-                $image_path = DIR_IMAGE . $product['image'];
-
-                // сделаем резак фото
-                if (is_file($image_path) && !empty($product['image'])) {
-                    $image = $this->model_tool_image->resize($product['image'], 150, 150);
-                } else {
-                    $image = $this->model_tool_image->resize('no_image.png', 150, 150);
-                }
-
-                $data = file_get_contents($image);
-                $type = pathinfo($image, PATHINFO_EXTENSION);
-                $image_64_decode = 'data:image/' . $type . ';base64,' . base64_encode($data);
-
-                $price = (int)$product['price'];
-                $name = $product['name'];
-
-
-                $data_product = <<<EOF
-                                <td>
-                                    <div class="block_tel">
-                                        <img src="$image_64_decode" class="col" alt="$name">
-                                        <p>$price ₽</p>
-                                        <p>$name</p>
-                                    </div>
-                                </td>
-                            EOF;
-
-                if (count($products) === ($key_product + 1) && count($products) < 7) {
-                    for ($i = 1; $i <= (7 - count($products)); $i++) {
-                        $data_product .= "<td width='25mm'></td>";
-                    }
-                }
-
-                $data_html_product .= $data_product;
-
-                if (($key % 7 === 0 && $key_product !== 0) || count($products) === ($key_product + 1)) {
-                    $data_html_product .= "</tr>";
-                }
-
-                $total++;
-                $key++;
-                $key_product++;
-            }
-
-            $category_name = $category['name'];
-
-            // обрезаем подкатегории
-            //$names = explode('>', $category['name']);
-            //$category_name = trim(end($names));
-
-            $data_category = <<<EOF
-                        <table class="container">
-                            <tbody>
-                                <tr>
-                                    <th colspan="7">
-                                        <table class="m_0 container">
-                                            <tr>
-                                                <th colspan="7">
-                                                    `<h2 class="m_0 fs_head-cat fw-bold">$parent_name</h2>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="7">
-                                                    <h2 class="m_0 bg_color fs_head fw-bold">$category_name</h2>
-                                                </th>
-                                            </tr>
-                                        </table>
-                                        
-                                    </th>
-                                </tr>
-                                $data_html_product
-                            </tbody>
-                        </table>
-            EOF;
-
-            $data_html_category .= $data_category;
+            $data_html_category .= $this->foreachCategory($category_id);
         }
 
         $options = new Options();
@@ -260,6 +152,147 @@ class ModelCatalogPdf extends Model {
         // Output the generated PDF to Browser
         //$mpdf->stream();
         $mpdf->stream('price.pdf',array('Attachment'=>0));
+    }
+
+    /**
+     * @param $category_id
+     * @return string
+     */
+    private function generateCategoryHtml($category_id, $show_parent_title = true): string
+    {
+            $category = $this->model_catalog_category->getCategory($category_id);
+            $parent = $this->model_catalog_category->getCategory($category['parent_id']);
+
+            $category_name = $category['name'];
+            $parent_name = $parent['name'];
+
+            $filter_products = [
+                'filter_category_id' => $category['category_id'],
+                //'filter_sub_category' => true,
+            ];
+            $products = $this->getProducts($filter_products);
+
+            $data_html_product = $this->generateProductHtml($products);
+
+            if ($show_parent_title) {
+                $html_parent_name = "<p>$parent_name</p>";
+            } else {
+                $html_parent_name = '';
+            }
+
+        return <<<EOF
+                       <table class="container">
+                            <tbody>
+                                <tr>
+                                    <th colspan="7">
+                                        <th colspan="7">
+                                            <h2 class="m_0 fs_head-cat fw-bold">$category_name</h2>
+                                            $html_parent_name
+                                        </th>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                       $data_html_product
+            EOF;
+    }
+
+    /**
+     * @param $category_id
+     * @return string
+     */
+    private function foreachCategory($category_id): string
+    {
+        $data_html_category = '';
+        $childs_categories = $this->getCategories($category_id);
+
+        $category = $this->model_catalog_category->getCategory($category_id);
+        $parent = $this->model_catalog_category->getCategory($category['parent_id']);
+
+        if (!in_array($parent['category_id'], $this->parents)) {
+            $this->parents[] = $parent['category_id'];
+            $show_parent_title = true;
+        } else {
+            $show_parent_title = false;
+        }
+
+        $data_html_category .= $this->generateCategoryHtml($category_id, $show_parent_title);
+
+        foreach ($childs_categories as $childs_category) {
+            $data_html_category .= $this->foreachCategory($childs_category['category_id']);
+        }
+
+        return $data_html_category;
+    }
+
+    /**
+     * @param $products
+     * @return string
+     */
+    private function generateProductHtml($products): string
+    {
+        $key_product = 0;
+        $data_html_product = '';
+
+        foreach ($products as $product)
+        {
+            if ($key_product === 0 || $key_product % 7 === 0) {
+                $data_html_product .= "<tr>";
+            }
+
+            if (!empty($this->max) && $this->total > $this->max) {
+                continue;
+            }
+
+            $image_path = DIR_IMAGE . $product['image'];
+
+            // сделаем резак фото
+            if (is_file($image_path) && !empty($product['image'])) {
+                $image = $this->model_tool_image->resize($product['image'], 150, 150);
+            } else {
+                $image = $this->model_tool_image->resize('no_image.png', 150, 150);
+            }
+
+            $data = file_get_contents($image);
+            $type = pathinfo($image, PATHINFO_EXTENSION);
+            $image_64_decode = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+            $price = (int)$product['price'];
+            $name = $product['name'];
+
+            $data_product = <<<EOF
+                                <td>
+                                    <div class="block_tel">
+                                        <img src="$image_64_decode" class="col" alt="$name">
+                                        <p>$price ₽</p>
+                                        <p>$name</p>
+                                    </div>
+                                </td>
+                            EOF;
+
+            if (count($products) === ($key_product + 1) && count($products) < 7) {
+                for ($i = 1; $i <= (7 - count($products)); $i++) {
+                    $data_product .= "<td width='25mm'></td>";
+                }
+            }
+
+            $data_html_product .= $data_product;
+
+            if (($key_product % 7 === 0 && $key_product !== 0) || count($products) === ($key_product + 1)) {
+                $data_html_product .= "</tr>";
+            }
+
+            $this->total++;
+            $key_product++;
+        }
+
+        return <<<EOF
+                       <table class="container">
+                            <tbody>
+                                $data_html_product
+                            </tbody>
+                        </table>
+            EOF;
     }
 
     public function getProducts($data = array()) {
@@ -410,5 +443,11 @@ class ModelCatalogPdf extends Model {
         }
 
         return $product_data;
+    }
+
+    public function getCategories($parent_id = 0) {
+        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "category c LEFT JOIN " . DB_PREFIX . "category_description cd ON (c.category_id = cd.category_id) LEFT JOIN " . DB_PREFIX . "category_to_store c2s ON (c.category_id = c2s.category_id) WHERE c.parent_id = '" . (int)$parent_id . "' AND cd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND c2s.store_id = '" . (int)$this->config->get('config_store_id') . "'  AND c.status = '1' ORDER BY c.sort_order, LCASE(cd.name)");
+
+        return $query->rows;
     }
 }
