@@ -61,16 +61,20 @@ class ControllerCommonPdf extends Controller {
         $results = $this->model_catalog_category->getCategories($filter_data);
 
         foreach ($results as $result) {
-            $data[] = array(
-                'category_id' => $result['category_id'],
-                'name'        => $result['name'],
-                'category' => $this->model_catalog_category->getCategory($result['category_id']),
-                'level' => $this->model_catalog_category->getCategoryPath($result['category_id']),
-            );
+            $level = $this->model_catalog_category->getCategoryPath($result['category_id']);
+            $category = $this->model_catalog_category->getCategory($result['category_id']);
+           // echo"<pre>"; var_dump(compact('level', 'category')); die();
+
+            if (!empty($level) && count($level) === 2 && $category['status'] == 1) {
+                $data[] = array(
+                    'category_id' => $result['category_id'],
+                    'name'        => $result['name'],
+                    'category' => $category,
+                    'level' => $level,
+                );
+            }
         }
 
-        return array_filter($data, function ($item) {
-            return !empty($item['level']) && count($item['level']) === 1 && $item['category']['status'] == 1;
-        });
+        return $data ?? [];
     }
 }
