@@ -181,25 +181,22 @@ class ModelCatalogPdf extends Model {
             }
 
         return <<<EOF
-                       <table class="container">
+                        <table class="container">
                             <tbody>
                                 <tr>
-                                    <th colspan="7">
                                         <th colspan="7">
                                             $html_parent_name
                                         </th>
-                                    </th>
                                 </tr>
                                 <tr>
-                                    <th colspan="7">
                                         <th colspan="7">
                                             <h2 class="m_0 fs_head bg_color fw-bold">$category_name</h2>
                                         </th>
-                                    </th>
                                 </tr>
                             </tbody>
                         </table>
-                       $data_html_product
+                        $data_html_product
+                            
             EOF;
     }
 
@@ -300,7 +297,6 @@ class ModelCatalogPdf extends Model {
                         </table>
             EOF;
     }
-
     public function getProducts($data = array()) {
         $sql = "SELECT p.product_id, (SELECT AVG(rating) AS total FROM " . DB_PREFIX . "review r1 WHERE r1.product_id = p.product_id AND r1.status = '1' GROUP BY r1.product_id) AS rating, (SELECT price FROM " . DB_PREFIX . "product_discount pd2 WHERE pd2.product_id = p.product_id AND pd2.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND pd2.quantity = '1' AND ((pd2.date_start = '0000-00-00' OR pd2.date_start < NOW()) AND (pd2.date_end = '0000-00-00' OR pd2.date_end > NOW())) ORDER BY pd2.priority ASC, pd2.price ASC LIMIT 1) AS discount, (SELECT price FROM " . DB_PREFIX . "product_special ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND ((ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special";
 
@@ -457,3 +453,4 @@ class ModelCatalogPdf extends Model {
         return $query->rows;
     }
 }
+
