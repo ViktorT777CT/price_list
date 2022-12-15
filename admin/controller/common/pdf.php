@@ -49,7 +49,7 @@ class ControllerCommonPdf extends Controller {
         $this->document->setTitle($this->language->get('heading_title'));
         $this->load->model('catalog/category');
 
-        $data['categories'] = array();
+        $data = [];
 
         $filter_data = array(
             'sort'  => 'name',
@@ -59,13 +59,11 @@ class ControllerCommonPdf extends Controller {
         );
 
         $results = $this->model_catalog_category->getCategories($filter_data);
-
         foreach ($results as $result) {
             $level = $this->model_catalog_category->getCategoryPath($result['category_id']);
             $category = $this->model_catalog_category->getCategory($result['category_id']);
-           // echo"<pre>"; var_dump(compact('level', 'category')); die();
 
-            if (!empty($level) && count($level) === 2 && $category['status'] == 1) {
+            if (!empty($level) && count($level) === 2 && $category['status'] == 1 && !empty($category['name'])) {
                 $data[] = array(
                     'category_id' => $result['category_id'],
                     'name'        => $result['name'],
@@ -83,6 +81,6 @@ class ControllerCommonPdf extends Controller {
             }
         }
 
-        return $data ?? [];
+        return $data;
     }
 }
