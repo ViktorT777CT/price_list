@@ -175,7 +175,7 @@ class ModelCatalogPdf extends Model {
             $data_html_product = $this->generateProductHtml($products);
 
             if ($show_parent_title) {
-                $html_parent_name = "<p>$parent_name</p>";
+                $html_parent_name = "<p class='m_0 fs_head-cat fw-bold'>$parent_name</p>";
             } else {
                 $html_parent_name = '';
             }
@@ -186,8 +186,14 @@ class ModelCatalogPdf extends Model {
                                 <tr>
                                     <th colspan="7">
                                         <th colspan="7">
-                                            <h2 class="m_0 fs_head-cat fw-bold">$category_name</h2>
                                             $html_parent_name
+                                        </th>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colspan="7">
+                                        <th colspan="7">
+                                            <h2 class="m_0 fs_head bg_color fw-bold">$category_name</h2>
                                         </th>
                                     </th>
                                 </tr>
