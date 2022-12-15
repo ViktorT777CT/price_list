@@ -41,7 +41,8 @@ class ModelCatalogPdf extends Model {
             $data_html_product = '';
 
             $key = 1;
-            foreach ($products as $key_product => $product)
+            $key_product = 0;
+            foreach ($products as $product)
             {
                 if ($key_product === 0 || $key_product % 7 === 0) {
                     $data_html_product .= "<tr>";
@@ -91,6 +92,7 @@ class ModelCatalogPdf extends Model {
 
                 $total++;
                 $key++;
+                $key_product++;
             }
 
             $category_name = $category['name'];
