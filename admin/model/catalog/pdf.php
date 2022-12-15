@@ -75,6 +75,7 @@ class ModelCatalogPdf extends Model {
                 $price = (int)$product['price'];
                 $name = $product['name'];
 
+
                 $data_product = <<<EOF
                                 <td>
                                     <div class="block_tel">
@@ -87,7 +88,7 @@ class ModelCatalogPdf extends Model {
 
                 if (count($products) === ($key_product + 1) && count($products) < 7) {
                     for ($i = 1; $i <= (7 - count($products)); $i++) {
-                        $data_product .= "<td></td>";
+                        $data_product .= "<td width='25mm'></td>";
                     }
                 }
 
@@ -111,10 +112,21 @@ class ModelCatalogPdf extends Model {
             $data_category = <<<EOF
                         <table class="container">
                             <tbody>
-                                <h1>$parent_name</h1>
                                 <tr>
                                     <th colspan="7">
-                                        <h2 class="m_0 bg_color fs_head fw-bold">$category_name</h2>
+                                        <table class="m_0 container">
+                                            <tr>
+                                                <th colspan="7">
+                                                    `<h2 class="m_0 fs_head-cat fw-bold">$parent_name</h2>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="7">
+                                                    <h2 class="m_0 bg_color fs_head fw-bold">$category_name</h2>
+                                                </th>
+                                            </tr>
+                                        </table>
+                                        
                                     </th>
                                 </tr>
                                 $data_html_product
@@ -157,6 +169,10 @@ class ModelCatalogPdf extends Model {
                             .fs_head{
                                 font-size: 14pt;
                                 color: #fff;
+                            }
+                            .fs_head-cat{
+                                font-size: 16pt;
+                                color: #9e7d67;
                             }
                             .bg_color{
                                 background-color: #9e7d67;
