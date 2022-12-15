@@ -106,7 +106,7 @@ class ModelCatalogPdf extends Model {
                             <tbody>
                                 <tr>
                                     <th colspan="7">
-                                        <h2 class="m_0 fs_head fw-bold">$category_name</h2>
+                                        <h2 class="m_0 bg_color fs_head fw-bold">$category_name</h2>
                                     </th>
                                 </tr>
                                 $data_html_product
@@ -148,6 +148,10 @@ class ModelCatalogPdf extends Model {
                             }
                             .fs_head{
                                 font-size: 14pt;
+                                color: #fff;
+                            }
+                            .bg_color{
+                                background-color: #9e7d67;
                             }
                             .container{
                                 width: 190mm;
