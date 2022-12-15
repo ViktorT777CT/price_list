@@ -29,14 +29,47 @@ class ControllerCommonPdf extends Controller {
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
 
+        $data['categories'] = $this->getList();
+
         $this->response->setOutput($this->load->view('common/pdf', $data));
     }
 
     private function download()
     {
         $max = (int)($this->request->post['max'] ?? 0);
+        $category_ids = $this->request->post['category'];
         $this->load->model('catalog/pdf');
 
-        $this->model_catalog_pdf->generatePdf($max);
+        $this->model_catalog_pdf->generatePdf($max, $category_ids);
+    }
+
+    private function getList() {
+
+        $this->load->language('catalog/category');
+        $this->document->setTitle($this->language->get('heading_title'));
+        $this->load->model('catalog/category');
+
+        $data['categories'] = array();
+
+        $filter_data = array(
+            'sort'  => 'ASC',
+            'order' => 'name',
+            'start' => 0,
+            'limit' => 50000
+        );
+
+        $results = $this->model_catalog_category->getCategories($filter_data);
+
+        foreach ($results as $result) {
+            $data[] = array(
+                'category_id' => $result['category_id'],
+                'name'        => $result['name'],
+                'level' => $this->model_catalog_category->getCategoryPath($result['category_id']),
+            );
+        }
+
+        return array_filter($data, function ($item) {
+            return !empty($item['level']) && count($item['level']) === 1;
+        });
     }
 }

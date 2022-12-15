@@ -27,6 +27,34 @@
                         <input class="form-control" type="number" name="max" id="max">
                         <div id="emailHelp" class="form-text">Если нужно выгрузить все оставьте поле пустым.</div>
                     </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'category\']').prop('checked', this.checked);" /></td>
+                                        <td class="text-left">Название категории</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if categories %}
+                                        {% for category in categories %}
+                                            <tr>
+                                                <td class="text-center">{% if category.category_id in selected %}
+                                                        <input type="checkbox" name="category[]" value="{{ category.category_id }}" checked="checked" />
+                                                    {% else %}
+                                                        <input type="checkbox" name="category[]" value="{{ category.category_id }}" />
+                                                    {% endif %}</td>
+                                                <td class="text-left">{{ category.name }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td class="text-center" colspan="4">{{ text_no_results }}</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
                 </form>
             </div>
         </div>
