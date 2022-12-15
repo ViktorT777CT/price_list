@@ -187,9 +187,6 @@ class ModelCatalogPdf extends Model {
                                 <td>
                                     <table class="head_text">
                                         <tr>
-                                            <td>Ежедневно с 09:00 до 20:00</td>
-                                        </tr>
-                                        <tr>
                                             <td>ИП АСЕЕВА О.Ю.ИНН 143520612490</td>
                                         </tr>
                                         <tr>
