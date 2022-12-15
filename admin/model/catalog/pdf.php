@@ -21,11 +21,18 @@ class ModelCatalogPdf extends Model {
 
         $data_html_category = '';
         $total = 0;
+        $parent_id = 0;
 
         foreach ($category_ids as $category_id) {
             $category = $this->model_catalog_category->getCategory($category_id);
+            $parent = $this->model_catalog_category->getCategory($category['parent_id']);
 
-            //echo"<pre>"; var_dump($category_path); die();
+            if ($parent_id !== $parent['category_id']) {
+                $parent_id = $parent['category_id'];
+                $parent_name = $parent['name'];
+            } else {
+                $parent_name = '';
+            }
 
             if (!empty($max) && $total === $max) {
                 continue;
@@ -104,6 +111,7 @@ class ModelCatalogPdf extends Model {
             $data_category = <<<EOF
                         <table class="container">
                             <tbody>
+                                <h1>$parent_name</h1>
                                 <tr>
                                     <th colspan="7">
                                         <h2 class="m_0 bg_color fs_head fw-bold">$category_name</h2>
