@@ -52,8 +52,8 @@ class ControllerCommonPdf extends Controller {
         $data['categories'] = array();
 
         $filter_data = array(
-            'sort'  => 'ASC',
-            'order' => 'name',
+            'sort'  => 'name',
+            'order' => 'ASC',
             'start' => 0,
             'limit' => 50000
         );
