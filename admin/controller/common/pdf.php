@@ -73,6 +73,14 @@ class ControllerCommonPdf extends Controller {
                     'level' => $level,
                 );
             }
+            if (!empty($level) && count($level) === 3 && $category['status'] == 1) {
+                $data[] = array(
+                    'category_id' => $result['category_id'],
+                    'name'        => $result['name'],
+                    'category' => $category,
+                    'level' => $level,
+                );
+            }
         }
 
         return $data ?? [];
