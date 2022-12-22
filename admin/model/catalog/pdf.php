@@ -162,7 +162,7 @@ class ModelCatalogPdf extends Model {
     {
             $category = $this->model_catalog_category->getCategory($category_id);
             $parent = $this->model_catalog_category->getCategory($category['parent_id']);
-
+            
             $category_name = $category['name'];
             $parent_name = $parent['name'];
 
@@ -239,7 +239,11 @@ class ModelCatalogPdf extends Model {
 
         foreach ($products as $product)
         {
+            
             if ($key_product === 0 || $key_product % 7 === 0) {
+                if($key_product !== 0 ){
+                    $data_html_product .= "</tr>";
+                }
                 $data_html_product .= "<tr>";
             }
 
@@ -281,7 +285,7 @@ class ModelCatalogPdf extends Model {
 
             $data_html_product .= $data_product;
 
-            if (($key_product % 7 === 0 && $key_product !== 0) || count($products) === ($key_product + 1)) {
+            if ( count($products) === ($key_product + 1)) {
                 $data_html_product .= "</tr>";
             }
 
