@@ -264,7 +264,7 @@ class ModelCatalogPdf extends Model {
             $type = pathinfo($image, PATHINFO_EXTENSION);
             $image_64_decode = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
-            $price = (int)$product['price'];
+            $price = number_format($product['price'], 2, '.', '');
             $name = $product['name'];
 
             $data_product = <<<EOF
