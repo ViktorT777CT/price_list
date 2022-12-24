@@ -172,14 +172,21 @@ class ModelCatalogPdf extends Model {
             ];
             $products = $this->getProducts($filter_products);
 
-            $data_html_product = $this->generateProductHtml($products);
+            if (!empty($products)){
+                $data_html_product = $this->generateProductHtml($products);
+            } else {
+                $data_html_product = '';
+            }
 
-            if ($show_parent_title) {
+            if ($show_parent_title && !empty($data_html_product)) {
                 $html_parent_name = "<p class='m_0 fs_head-cat fw-bold'>$parent_name</p>";
             } else {
                 $html_parent_name = '';
             }
 
+            if (empty($products)){
+                return '';
+            } 
         return <<<EOF
                         <table class="container">
                             <tbody>
