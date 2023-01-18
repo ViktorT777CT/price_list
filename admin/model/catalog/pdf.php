@@ -156,15 +156,20 @@ class ModelCatalogPdf extends Model {
 
     /**
      * @param $category_id
+     * @param bool $show_parent_title
+     * @param bool $one_category
      * @return string
      */
-    private function generateCategoryHtml($category_id, $show_parent_title = true): string
+    private function generateCategoryHtml($category_id, bool $show_parent_title = true, bool $one_category = false): string
     {
             $category = $this->model_catalog_category->getCategory($category_id);
-            $parent = $this->model_catalog_category->getCategory($category['parent_id']);
+
+            if (!$one_category) {
+                $parent = $this->model_catalog_category->getCategory($category['parent_id']);
+                $parent_name = $parent['name'];
+            }
             
             $category_name = $category['name'];
-            $parent_name = $parent['name'];
 
             $filter_products = [
                 'filter_category_id' => $category['category_id'],
@@ -178,7 +183,7 @@ class ModelCatalogPdf extends Model {
                 $data_html_product = '';
             }
 
-            if ($show_parent_title && !empty($data_html_product)) {
+            if ($show_parent_title && !empty($data_html_product) && !$one_category) {
                 $html_parent_name = "<p class='m_0 fs_head-cat fw-bold'>$parent_name</p>";
             } else {
                 $html_parent_name = '';
@@ -219,14 +224,16 @@ class ModelCatalogPdf extends Model {
         $category = $this->model_catalog_category->getCategory($category_id);
         $parent = $this->model_catalog_category->getCategory($category['parent_id']);
 
-        if (!in_array($parent['category_id'], $this->parents)) {
+        $one_category = empty($parent);
+
+        if (!empty($parent) && !in_array($parent['category_id'], $this->parents)) {
             $this->parents[] = $parent['category_id'];
             $show_parent_title = true;
         } else {
             $show_parent_title = false;
         }
 
-        $data_html_category .= $this->generateCategoryHtml($category_id, $show_parent_title);
+        $data_html_category .= $this->generateCategoryHtml($category_id, $show_parent_title, $one_category);
 
         foreach ($childs_categories as $childs_category) {
             $data_html_category .= $this->foreachCategory($childs_category['category_id']);

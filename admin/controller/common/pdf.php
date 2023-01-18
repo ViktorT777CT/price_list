@@ -48,6 +48,7 @@ class ControllerCommonPdf extends Controller {
         $this->load->language('catalog/category');
         $this->document->setTitle($this->language->get('heading_title'));
         $this->load->model('catalog/category');
+        $this->load->model('catalog/product');
 
         $data = [];
 
@@ -62,8 +63,9 @@ class ControllerCommonPdf extends Controller {
         foreach ($results as $result) {
             $level = $this->model_catalog_category->getCategoryPath($result['category_id']);
             $category = $this->model_catalog_category->getCategory($result['category_id']);
+            $products = $this->model_catalog_product->getProductsByCategoryId($result['category_id']);
 
-            if (!empty($level) && count($level) === 2 && $category['status'] == 1 && !empty($category['name'])) {
+            if (!empty($products) && $category['status'] == 1 && !empty($category['name'])) {
                 $data[] = array(
                     'category_id' => $result['category_id'],
                     'name'        => $result['name'],
