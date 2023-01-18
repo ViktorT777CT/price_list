@@ -189,6 +189,11 @@ class ModelCatalogPdf extends Model {
                 $html_parent_name = '';
             }
 
+            if ($one_category) {
+                $category_name = '';
+                $html_parent_name = "<p class='m_0 fs_head-cat fw-bold'>" . $category['name'] . "</p>";
+            }
+
             if (empty($products)){
                 return '';
             } 
